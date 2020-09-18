@@ -1,0 +1,59 @@
+
+from selenium import webdriver
+import os 
+import time 
+
+class InstagramBot2():
+    peoples=['therock','snoopdogg','kevinhart4real','justinbieber','dualipa',]
+    messages=['hii','hii','hello','hello','how are you',]
+    def __init__(self,usrname,pssword):
+        self.usrname=usrname
+        self.pssword=pssword
+        self.driver=webdriver.Firefox('executable_path='enter_geckodriver_path_here')
+        self.driver.get('https://www.instagram.com/')
+
+    def login(self):
+        self.driver.get('https://www.instagram.com/accounts/login/')
+        time.sleep(4)
+        usrname_input=self.driver.find_element_by_name('username')
+        usrname_input.send_keys(self.usrname)
+        pssword_input=self.driver.find_element_by_name('password')
+        pssword_input.send_keys(self.pssword)
+        submit_button=self.driver.find_element_by_xpath('//*[@id="loginForm"]/div/div[3]')
+        submit_button.click()
+        time.sleep(4)
+        login_info_btn=self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/div/div/button')
+        login_info_btn.click()
+        time.sleep(2)
+        notification_btn=self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div/div[3]/button[2]')
+        notification_btn.click()
+
+    def follow_people(self):
+        for people in self.peoples:
+            self.driver.get('https://www.instagram.com/' + people + '/')
+            time.sleep(3)
+            follow=self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/div[1]/div[2]/div/div/div/span/span[1]/button')
+            follow.click()
+            time.sleep(2)
+    def message_ppls(self):
+        self.driver.get('https://www.instagram.com/direct/inbox/')
+        time.sleep(2)
+        user=self.driver.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[1]/div[2]/div/div/div/div/div[1]/a/div')
+        user.click()
+        time.sleep(2)
+        txtara=self.driver.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[2]/textarea')
+        txtara.click()
+        time.sleep(2)
+        for ms in self.messages:
+            txtara.send_keys(ms)
+            snd_btn=self.driver.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[3]/button').click()
+            time.sleep(2)
+    def hustle(self):
+        self.follow_people()
+        self.message_ppls()
+    
+        
+if __name__ == "__main__":
+    ig_bot=InstagramBot2('enter_your_instagram_id','eneter_instagram_id_password')
+    ig_bot.login()
+    ig_bot.hustle()
